@@ -31,17 +31,4 @@ func main() {
 	if err := db.Create(&model.Period{Period: "202105"}).Error; err != nil {
 		log.Println(err)
 	}
-
-	// if err = db.Create(&model.UserInfo{
-	// 	UserId:        2,
-	// 	LastName:      "伊藤",
-	// 	FirstName:     "優",
-	// 	Period:        "202105",
-	// 	DepartmentId:  1,
-	// 	JobId:         1,
-	// 	EnrollmentFlg: true,
-	// 	AdminFlg:      false,
-	// }).Error; err != nil {
-	// 	log.Println(err)
-	// }
 }
