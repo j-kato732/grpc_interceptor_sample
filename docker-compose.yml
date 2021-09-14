@@ -12,23 +12,11 @@ services:
     stdin_open: true
 
   db:
-    container_name: postgres
-    build: ./services/db
+    container_name: sqlite
+    image: nouchka/sqlite3:latest
     ports:
       - "10030:5432"
-    environment:
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: password+1
+    stdin_open: true
+    tty: true
     volumes:
-      - ./services/db/postgres:/var/lib/postgresql/data
-
-  pgweb:
-    image: sosedoff/pgweb
-    container_name: pgweb
-    environment:
-      - DATABASE_URL=postgres://admin:password+1@db:5432/testdb?sslmode=disable
-    ports:
-      - "10031:8081"
-    links:
-      - db:postgres
-    restart: always
+      - ./services/db/sqlite:/root/db

@@ -24,10 +24,13 @@ require (
 	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/jinzhu/now v1.1.2 // indirect
 	github.com/lib/pq v1.10.2 // indirect
+	github.com/markcheno/go-talib v0.0.0-20190307022042-cd53a9264d70 // indirect
+	github.com/mattn/go-sqlite3 v1.14.8 // indirect
 	golang.org/x/crypto v0.0.0-20210711020723-a769d52b0f97 // indirect
 	golang.org/x/net v0.0.0-20210405180319-a5a99cb37ef4 // indirect
 	golang.org/x/sys v0.0.0-20210615035016-665e8c7367d1 // indirect
 	golang.org/x/text v0.3.6 // indirect
 	gorm.io/driver/postgres v1.1.0 // indirect
-	gorm.io/gorm v1.21.14 // indirect
+	gorm.io/driver/sqlite v1.1.5 // indirect
+	gorm.io/gorm v1.21.15 // indirect
 )

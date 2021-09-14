@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"log"
 
-	"gorm.io/driver/postgres"
+	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 
 	"grpc_gateway_sample/db/model"
@@ -21,7 +21,7 @@ const (
 // )
 
 func main() {
-	db, err := gorm.Open(postgres.Open(conn), &gorm.Config{})
+	db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
 	if err != nil {
 		fmt.Println(err)
 	}
