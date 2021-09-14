@@ -5,7 +5,7 @@ ENV GOOS=linux
 ENV GOARCH=amd64
 
 
-RUN apt update && apt install -y git curl protobuf-compiler tree sqlite3 python3 sqlite-web
+RUN apt update && apt install -y git curl protobuf-compiler tree sqlite3 
 # protoc-gen-go @ v1.27.1
 RUN go install google.golang.org/protobuf/cmd/protoc-gen-go@latest 
 # v1.1.0

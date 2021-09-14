@@ -15,35 +15,16 @@ $ protoc -I .:${GOPATH}/src --go_out ./ --go_opt paths=source_relative     --go-
 $ protoc -I .:${GOPATH}/src --grpc-gateway_out . --grpc-gateway_opt logtostderr=true --grpc-gateway_opt paths=source_relative proto/aimo.proto
 ```
 
-# install postgre client
-```
-$ brew install postgresql
-```
 # How to connect
 ```
-$ psql -h localhost -p 10030 -U admin
+$ sqlite3 test.db 
 ```
-# Create dabatase
+# show table
 ```
-$ create dabatase dbname
-$ \l
-```
-# connect database
-```
-$ psql -h localhost -p 10030 -U admin -d testdb
+$ .table
 ```
 
-# Create Table
+# sqlite web
 ```
-# create table table_name
-# (columm1 data_type const,
-# columm2 data_type const,
-# columm3 data_type const,
-# primary key(columm1));
-```
-```
-create table periods
-(id integer not null,
-period char(6) not null,
-primary key(id));
+$ sqlite_web test.db
 ```
