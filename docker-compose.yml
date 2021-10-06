@@ -20,3 +20,12 @@ services:
     tty: true
     volumes:
       - ./services/db/sqlite:/root/db
+
+  sqlite-web:
+    container_name: sqlite_web
+    build: ./sqlite-web
+    ports:
+      - "10040:8080"
+    volumes:
+      - ./services/api/test.db:/data/test.db
+    command: sqlite_web -H 0.0.0.0 -x /data/test.db
