@@ -9,6 +9,7 @@ import (
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"google.golang.org/grpc"
 
+	errdetails "grpc_gateway_sample/errors"
 	gw "grpc_gateway_sample/proto"
 )
 
@@ -25,7 +26,9 @@ func run() error {
 
 	// Register gRPC server endpoint
 	// Note: Make sure the gRPC server is running properly and accessible
-	mux := runtime.NewServeMux()
+	mux := runtime.NewServeMux(
+		runtime.WithErrorHandler(errdetails.CustomHTTPError),
+	)
 	opts := []grpc.DialOption{grpc.WithInsecure()}
 	err := gw.RegisterAimoHandlerFromEndpoint(ctx, mux, *grpcServerEndpoint, opts)
 	// err := gw.RegisterAimoHandlerFromEndpoint(ctx, mux, *grpcServerEndpoint, opts)

@@ -5,20 +5,24 @@ import (
 	"fmt"
 	"log"
 	"net"
+
 	// "reflect"
 
 	"google.golang.org/grpc"
-	"gorm.io/driver/postgres"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
+	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 
 	// db "grpc_gateway_sample/db"
 	"grpc_gateway_sample/db/model"
+	errdetails "grpc_gateway_sample/errors"
 	pb "grpc_gateway_sample/proto"
 )
 
 const (
-	conn = "host=db port=5432 user=admin password=password+1 dbname=testdb sslmode=disable TimeZone=Asia/Shanghai"
-	port = ":8080"
+	port    = ":8080"
+	db_path = "./test.db"
 )
 
 type getPeriodService struct {
@@ -32,15 +36,15 @@ var (
 )
 
 func (s *getPeriodService) GetPeriod(ctx context.Context, message *pb.GetPeriodRequest) (*pb.GetPeriodResponse, error) {
-	psql_db, err := gorm.Open(postgres.Open(conn), &gorm.Config{})
+	db, err := gorm.Open(sqlite.Open(db_path), &gorm.Config{})
 	if err != nil {
 		fmt.Println(err)
 	}
-	con, err := psql_db.DB()
+	con, err := db.DB()
 	defer con.Close()
 
 	// SELECT * from period;
-	if err := psql_db.Find(&periods).Error; err != nil {
+	if err := db.Find(&periods).Error; err != nil {
 		log.Println(err)
 		return nil, err
 	} else {
@@ -70,7 +74,20 @@ func (s *getPeriodService) GetPeriod(ctx context.Context, message *pb.GetPeriodR
 func (s *getPeriodService) GetUserInfo(ctx context.Context, message *pb.GetUserInfoRequest) (*pb.GetUserInfoResponse, error) {
 	var userInfo model.UserInfo
 
-	psql_db, err := gorm.Open(postgres.Open(conn), &gorm.Config{})
+	userId := message.GetUserId()
+	period := message.GetPeriod()
+
+	if len(period) != 6 {
+		_ = errdetails.AddErrorDetail(ctx, errdetails.Period)
+		return &pb.GetUserInfoResponse{}, status.Error(codes.InvalidArgument, "invalid argument")
+	}
+
+	if userId == 0 || len(period) == 0 {
+		_ = errdetails.AddErrorDetail(ctx, errdetails.InvalidUserId)
+		return &pb.GetUserInfoResponse{}, status.Error(codes.InvalidArgument, "invalid request")
+	}
+
+	psql_db, err := gorm.Open(sqlite.Open(db_path), &gorm.Config{})
 	if err != nil {
 		fmt.Println(err)
 		return nil, err
