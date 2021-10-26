@@ -81,7 +81,7 @@ func (s *GetPeriodService) GetUserInfo(ctx context.Context, message *pb.GetUserI
 
 	if userId == 0 || len(period) == 0 {
 		_ = errdetails.AddErrorDetail(ctx, errdetails.InvalidUserId)
-		return &pb.GetUserInfoResponse{}, status.Error(codes.InvalidArgument, "invalid request")
+		return &pb.GetUserInfoResponse{}, status.Error(codes.InvalidArgument, codes.InvalidArgument.String())
 	}
 
 	psql_db, err := gorm.Open(sqlite.Open(db_path), &gorm.Config{})

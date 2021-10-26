@@ -1,5 +1,7 @@
 package errors
 
+import "errors"
+
 type ErrorBody struct {
 	GrpcCode int32         `json:"grpcCode"`
 	Message  string        `json:"message"`
@@ -21,4 +23,5 @@ var (
 	InvalidDepartmentId = ErrorDetail{Name: "departmentId", Code: 202, Message: "departmentId is invalid"}
 	InvalidAimId        = ErrorDetail{Name: "aimId", Code: 203, Message: "aimId is invalid"}
 	InvalidAimNumber    = ErrorDetail{Name: "aimNumber", Code: 204, Message: "aimNumber is invalid"}
+	InvalidParam        = errors.New("invalid param period")
 )

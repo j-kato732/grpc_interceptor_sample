@@ -2,16 +2,21 @@ package main
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"log"
 	"net"
 
 	// "reflect"
 
+	grpc_middleware "github.com/grpc-ecosystem/go-grpc-middleware"
+	grpc_zap "github.com/grpc-ecosystem/go-grpc-middleware/logging/zap"
+	"go.uber.org/zap"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 
-	// db "grpc_gateway_sample/db"
-
+	errdetails "grpc_gateway_sample/errors"
 	pb "grpc_gateway_sample/proto"
 )
 
@@ -27,7 +32,10 @@ func SampleInterceptor() grpc.UnaryServerInterceptor {
 		// リクエストされたgrpcメソッドを実行
 		resp, err := handler(ctx, req)
 		if err != nil {
-			return nil, err
+			log.Println(errors.Is(err, errdetails.InvalidParam))
+			log.Printf("Response: %v", &pb.GetUserInfoResponse{})
+			log.Printf("Error: %v", err.Error())
+			return nil, status.Error(codes.NotFound, codes.NotFound.String())
 		}
 
 		// メソッド呼び出し後の処理
@@ -38,13 +46,23 @@ func SampleInterceptor() grpc.UnaryServerInterceptor {
 }
 
 func main() {
+	// prepare zap logger
+	zapLogger, err := zap.NewProduction()
+	if err != nil {
+		log.Println(err)
+	}
+
 	lis, err := net.Listen("tcp", port)
 	if err != nil {
 		log.Fatalf("faild to listen: %v¥n", err)
 	}
 	server := grpc.NewServer(
-		grpc.UnaryInterceptor(SampleInterceptor()),
+		grpc.UnaryInterceptor(grpc_middleware.ChainUnaryServer(
+			SampleInterceptor(),
+			grpc_zap.UnaryServerInterceptor(zapLogger),
+		)),
 	)
+
 	// 実行したい実処理をserverに登録する
 	// periodService := &getPeriodService{}
 	// pb.RegisterAimoServer(server, periodService)
