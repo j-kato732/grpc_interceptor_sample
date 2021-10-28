@@ -14,8 +14,10 @@ $ protoc -I .:${GOPATH}/src --go_out ./ --go_opt paths=source_relative     --go-
 // gatewayの生成
 $ protoc -I .:${GOPATH}/src --grpc-gateway_out . --grpc-gateway_opt logtostderr=true --grpc-gateway_opt paths=source_relative proto/aimo.proto
 ```
+```
 // validatorの生成
 protoc -I .:${GOPATH}/src --go_out ./  --go_opt paths=source_relative  --govalidators_out ./ --govalidators_opt paths=source_relative   --go-grpc_out ./ --go-grpc_opt paths=source_relative proto/aimo.proto
+```
 
 # How to connect
 ```
