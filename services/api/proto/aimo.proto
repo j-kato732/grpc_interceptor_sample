@@ -5,6 +5,7 @@ package grpc_sample;
 option go_package = "grpc_gateway_sample/proto";
 
 import "google/api/annotations.proto";
+import "go-proto-validators/validator.proto";
 
 service aimo {
     rpc getPeriod(getPeriodRequest) returns (getPeriodResponse) {
@@ -42,8 +43,8 @@ message Period {
 }
 
 message getUserInfoRequest {
-    int32  user_id = 1;
-    string  period = 2;
+    int32  user_id = 1; 
+    string  period = 2 [(validator.field) = {string_not_empty : true}];
 }
 
 message getUserInfoResponse {

@@ -11,6 +11,7 @@ import (
 
 	grpc_middleware "github.com/grpc-ecosystem/go-grpc-middleware"
 	grpc_zap "github.com/grpc-ecosystem/go-grpc-middleware/logging/zap"
+	"github.com/grpc-ecosystem/go-grpc-middleware/validator"
 	"go.uber.org/zap"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
@@ -60,6 +61,7 @@ func main() {
 		grpc.UnaryInterceptor(grpc_middleware.ChainUnaryServer(
 			SampleInterceptor(),
 			grpc_zap.UnaryServerInterceptor(zapLogger),
+			grpc_validator.UnaryServerInterceptor(),
 		)),
 	)
 

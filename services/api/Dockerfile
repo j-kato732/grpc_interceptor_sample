@@ -28,4 +28,5 @@ RUN go get gorm.io/driver/sqlite
 
 RUN go get github.com/markcheno/go-talib
 
-RUN git clone https://github.com/googleapis/googleapis.git ${GOPATH}/src
+RUN git clone https://github.com/googleapis/googleapis.git ${GOPATH}/src \
+    && git clone https://github.com/mwitkow/go-proto-validators.git ${GOPATH}/src/go-proto-validators
