@@ -66,6 +66,29 @@ server := grpc.NewServer(
 		)),
 	)
 ```
+
+# response投げてみる
+```
+curl -v "localhost:10020/userInfo" | jq
+```
+レスポンス
+```
+{
+  "grpcCode": 5,
+  "message": "NotFound",
+  "details": []
+}
+```
+
+サーバログ
+```
+2021/10/29 13:23:26 Error: rpc error: code = InvalidArgument desc = InvalidArgument
+```
+
+periodを指定していないので、きちんとInvalidArgumentエラーを吐いてくれた
+しかしレスポンスを見るに、gatewayでのレスポンスには対応していないみたい
+
+gatewayのふり先をClientサイドに変更し、Clientサイドで色々gateway用のロジックを書く必要があるのか要検討
 # 参考
 
 [GitHub - mwitkow/go-proto-validators: Generate message validators from .proto annotations.](https://github.com/mwitkow/go-proto-validators)
